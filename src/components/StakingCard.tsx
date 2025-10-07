@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAccount, useChainId, useWriteContract, useWaitForTransactionReceipt, useReadContract } from "wagmi";
 import { parseUnits, formatUnits } from "viem";
 import { getContractAddresses, LOCK_PERIODS, calculateReward } from "@/lib/contracts/addresses";
@@ -46,6 +46,9 @@ export function StakingCard() {
   const [usdValue, setUsdValue] = useState("");
   const [lockPeriod, setLockPeriod] = useState<1 | 2>(1);
   const [step, setStep] = useState<"input" | "approve" | "stake">("input");
+  const [showApproveOptions, setShowApproveOptions] = useState(false);
+  const [approveType, setApproveType] = useState<"exact" | "infinite">("exact");
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Approve transaction
   const {
@@ -89,7 +92,10 @@ export function StakingCard() {
     if (!amount || isNaN(parseFloat(amount))) return;
 
     try {
-      const amountWei = parseUnits(amount, 16); // BZZ has 16 decimals
+      const amountWei = approveType === "infinite" 
+        ? BigInt("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff") // Max uint256
+        : parseUnits(amount, 16); // BZZ has 16 decimals
+      
       approveWrite({
         address: addresses.bzzToken,
         abi: ERC20_ABI,
@@ -97,6 +103,7 @@ export function StakingCard() {
         args: [addresses.stakingVault, amountWei],
       });
       setStep("approve");
+      setShowApproveOptions(false);
     } catch (error) {
       console.error("Approve error:", error);
     }
@@ -134,6 +141,26 @@ export function StakingCard() {
     const amountWei = parseUnits(amount, 16);
     return (bzzAllowance as bigint) < amountWei;
   };
+
+  const hasInfiniteApproval = () => {
+    if (!bzzAllowance) return false;
+    const maxUint256 = BigInt("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+    return (bzzAllowance as bigint) >= maxUint256 / BigInt(2); // Check if allowance is very large (infinite)
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowApproveOptions(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   if (!isConnected) {
     return (
@@ -239,15 +266,68 @@ export function StakingCard() {
       {/* Action Buttons */}
       <div className="space-y-3">
         {needsApproval() ? (
-          <button
-            onClick={handleApprove}
-            disabled={!amount || isApprovePending || isApproveConfirming}
-            className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-700 disabled:text-gray-500 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
-          >
-            {isApprovePending || isApproveConfirming
-              ? "Approving..."
-              : "Approve BZZ"}
-          </button>
+          <div className="relative" ref={dropdownRef}>
+            {/* Dropdown Options */}
+            {showApproveOptions && (
+              <div className="absolute bottom-full left-0 right-0 mb-2 bg-gray-800 border border-gray-700 rounded-lg overflow-hidden z-10">
+                <button
+                  onClick={() => {
+                    setApproveType("exact");
+                    handleApprove();
+                  }}
+                  disabled={isApprovePending || isApproveConfirming}
+                  className="w-full px-4 py-3 text-left text-white hover:bg-gray-700 transition-colors"
+                >
+                  Approve
+                </button>
+                <button
+                  onClick={() => {
+                    setApproveType("infinite");
+                    handleApprove();
+                  }}
+                  disabled={isApprovePending || isApproveConfirming}
+                  className="w-full px-4 py-3 text-left text-white hover:bg-gray-700 transition-colors border-t border-gray-700"
+                >
+                  Approve Infinite
+                </button>
+              </div>
+            )}
+            
+            {/* Main Approve Button */}
+            <button
+              onClick={() => setShowApproveOptions(!showApproveOptions)}
+              disabled={!amount || isApprovePending || isApproveConfirming}
+              className="w-full bg-gradient-to-r from-blue-600 to-teal-500 hover:from-blue-700 hover:to-teal-600 disabled:from-gray-700 disabled:to-gray-700 disabled:text-gray-500 text-white font-semibold py-3 px-6 rounded-lg transition-all flex items-center justify-center gap-2"
+            >
+              <span>
+                {isApprovePending || isApproveConfirming
+                  ? "Approving..."
+                  : hasInfiniteApproval()
+                  ? "Approve BZZ (Infinite)"
+                  : "Approve BZZ"}
+              </span>
+              <div className="flex items-center gap-1">
+                <div className="w-4 h-4 bg-white/20 rounded-full flex items-center justify-center">
+                  <span className="text-xs">i</span>
+                </div>
+                <svg
+                  className={`w-4 h-4 transition-transform ${
+                    showApproveOptions ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+            </button>
+          </div>
         ) : (
           <button
             onClick={handleStake}
