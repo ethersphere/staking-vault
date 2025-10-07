@@ -5,6 +5,7 @@ import { useAccount } from "wagmi";
 import { StakingCard } from "@/components/StakingCard";
 import { DashboardStats } from "@/components/DashboardStats";
 import { UserStakes } from "@/components/UserStakes";
+import { SwarmLogo } from "@/components/SwarmLogo";
 
 export default function Home() {
   const { isConnected } = useAccount();
@@ -23,10 +24,7 @@ export default function Home() {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              {/* Swarm hexagonal logo */}
-              <div className="w-8 h-8 bg-orange-500 rounded-sm flex items-center justify-center transform rotate-45">
-                <div className="w-4 h-4 bg-white rounded-sm transform -rotate-45"></div>
-              </div>
+              <SwarmLogo className="w-8 h-8 text-orange-500" />
               <span className="text-xl font-medium text-orange-500">swarm</span>
             </div>
             <ConnectButton />
@@ -85,16 +83,15 @@ export default function Home() {
                   How it works
                 </h3>
                 <p className="text-gray-400 text-sm leading-relaxed">
-                  <span className="text-orange-500">Beeport</span> is the web2 rails for{" "}
-                  <span className="text-orange-500">Swarm</span>, making it quick and simple to stake BZZ tokens and earn USDC rewards without running a node.
+                  Currently the <span className="text-orange-500">BZZ token</span> is fully circulated and there is remarkable selling pressure awaiting higher prices above 30 cents. Instead of doing a buyback, we use funds to offer <span className="text-orange-500">USDC incentives</span> to lock up BZZ, improving token fundamentals by reducing available supply.
                 </p>
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-white mb-3">
-                  Important Notice
+                  Staking Mechanism
                 </h3>
                 <p className="text-gray-400 text-sm leading-relaxed">
-                  This app is currently in <span className="text-orange-500">beta</span>, and some features may be unstable. For critical or large-scale use, we recommend running your own Bee node.
+                  Stake BZZ for <span className="text-orange-500">1 year (5% reward)</span> or <span className="text-orange-500">2 years (10% reward)</span>. Your BZZ is locked in a secure smart contract, and you receive USDC rewards instantly. This operates on a first-come-first-serve basis until USDC funds are depleted.
                 </p>
               </div>
             </div>
