@@ -47,6 +47,8 @@ Currently the BZZ token is fully circulated and there is remarkable selling pres
 
 ## Getting Started
 
+### Prerequisites
+
 First, ensure you're using Node.js 22:
 
 ```bash
@@ -58,19 +60,67 @@ nvm install 22
 nvm use 22
 ```
 
-Then, install dependencies:
+### Installation
+
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-Then, run the development server:
+### Frontend Setup
+
+1. Copy the environment file:
+   ```bash
+   cp env.local.example .env.local
+   ```
+
+2. Get a WalletConnect Project ID from [https://cloud.walletconnect.com/](https://cloud.walletconnect.com/)
+
+3. Add it to `.env.local`:
+   ```
+   NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id_here
+   ```
+
+### Smart Contracts
+
+Compile the contracts:
+
+```bash
+npm run compile
+```
+
+Run tests:
+
+```bash
+npm run test:contracts
+```
+
+Deploy to testnet:
+
+```bash
+npm run deploy:sepolia
+```
+
+### Run the Application
+
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
+
+### Features
+
+- **🔗 Connect Wallet**: Support for MetaMask, WalletConnect, and other popular wallets
+- **📊 Dashboard**: Real-time display of total locked BZZ, available USDC, and rewards paid
+- **💰 Staking**: Deposit BZZ tokens with 1 or 2 year lock periods
+- **🎁 Instant Rewards**: Receive 5% (1 year) or 10% (2 years) USDC immediately
+- **📈 ROI Calculator**: See expected rewards before staking
+- **🔓 Withdrawals**: Withdraw BZZ tokens after lock period expires
+- **📜 Stake History**: View all your active and completed stakes
 
 ## Project Structure
 
