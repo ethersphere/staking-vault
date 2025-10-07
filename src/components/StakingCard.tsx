@@ -137,8 +137,8 @@ export function StakingCard() {
 
   if (!isConnected) {
     return (
-      <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-8">
-        <h2 className="text-2xl font-bold text-white mb-4">Stake BZZ</h2>
+      <div className="bg-gray-900/30 border border-gray-800 rounded-xl p-8">
+        <h2 className="text-xl font-semibold text-white mb-4">Stake BZZ</h2>
         <p className="text-gray-400 mb-6">Connect your wallet to start staking</p>
         <div className="text-center py-12">
           <span className="text-6xl">🔌</span>
@@ -149,8 +149,8 @@ export function StakingCard() {
   }
 
   return (
-    <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
-      <h2 className="text-2xl font-bold text-white mb-6">Stake BZZ Tokens</h2>
+    <div className="bg-gray-900/30 border border-gray-800 rounded-xl p-6">
+      <h2 className="text-xl font-semibold text-white mb-6">Stake BZZ Tokens</h2>
 
       {/* Amount Input */}
       <div className="mb-6">
@@ -163,7 +163,7 @@ export function StakingCard() {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="0.0"
-            className="w-full bg-gray-900 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+            className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
           />
           <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
             {bzzBalance
@@ -183,7 +183,7 @@ export function StakingCard() {
           value={usdValue}
           onChange={(e) => setUsdValue(e.target.value)}
           placeholder="0.00"
-          className="w-full bg-gray-900 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+          className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
         />
         <p className="text-xs text-gray-500 mt-2">
           Enter the current USD value of your BZZ amount
@@ -201,7 +201,7 @@ export function StakingCard() {
             className={`p-4 rounded-lg border-2 transition-all ${
               lockPeriod === 1
                 ? "border-orange-500 bg-orange-500/10"
-                : "border-gray-600 bg-gray-900 hover:border-gray-500"
+                : "border-gray-700 bg-black hover:border-gray-600"
             }`}
           >
             <div className="text-lg font-bold text-white">1 Year</div>
@@ -212,7 +212,7 @@ export function StakingCard() {
             className={`p-4 rounded-lg border-2 transition-all ${
               lockPeriod === 2
                 ? "border-orange-500 bg-orange-500/10"
-                : "border-gray-600 bg-gray-900 hover:border-gray-500"
+                : "border-gray-700 bg-black hover:border-gray-600"
             }`}
           >
             <div className="text-lg font-bold text-white">2 Years</div>

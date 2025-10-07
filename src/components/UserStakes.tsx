@@ -80,8 +80,8 @@ export function UserStakes() {
 
   if (stakes.length === 0) {
     return (
-      <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
-        <h2 className="text-2xl font-bold text-white mb-6">Your Stakes</h2>
+      <div className="bg-gray-900/30 border border-gray-800 rounded-xl p-6">
+        <h2 className="text-xl font-semibold text-white mb-6">Your Stakes</h2>
         <div className="text-center py-12">
           <span className="text-6xl">📊</span>
           <p className="text-gray-500 mt-4">No stakes yet</p>
@@ -94,8 +94,8 @@ export function UserStakes() {
   }
 
   return (
-    <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
-      <h2 className="text-2xl font-bold text-white mb-6">Your Stakes</h2>
+    <div className="bg-gray-900/30 border border-gray-800 rounded-xl p-6">
+      <h2 className="text-xl font-semibold text-white mb-6">Your Stakes</h2>
 
       <div className="space-y-4">
         {stakes.map((stake, index) => (
@@ -103,7 +103,7 @@ export function UserStakes() {
             key={index}
             className={`p-5 rounded-lg border-2 transition-all ${
               stake.withdrawn
-                ? "border-gray-700 bg-gray-900/50 opacity-60"
+                ? "border-gray-800 bg-gray-900/50 opacity-60"
                 : isUnlocked(stake.unlockTime)
                 ? "border-green-500/30 bg-green-500/5"
                 : "border-orange-500/30 bg-orange-500/5"
@@ -145,7 +145,7 @@ export function UserStakes() {
               </div>
             </div>
 
-            <div className="flex justify-between items-center pt-3 border-t border-gray-700">
+            <div className="flex justify-between items-center pt-3 border-t border-gray-800">
               <div>
                 <div className="text-xs text-gray-500 mb-1">Unlock Date</div>
                 <div className="text-sm font-medium text-gray-300">
