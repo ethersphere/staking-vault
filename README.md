@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Staking Vault Protocol
+
+A Next.js application for the Swarm Foundation's BZZ token staking vault protocol.
+
+## Problem Statement
+
+Currently the BZZ token is fully circulated and there is remarkable selling pressure awaiting higher prices above 30 cents. Instead of doing a buyback (at least temporarily) we should use the funds we have to offer USDC incentives to lock up BZZ. This improves the fundamentals of the token by locking up supply that would otherwise sell in a free and liquid market.
+
+## Requirements
+
+### Smart Contract
+
+- A smart contract capable of being funded with USDC from the Swarm Foundation's wallet/multisig
+- The Swarm wallet should have permissions/role to withdraw any funds that are not used/locked/assigned to a staker
+- BZZ holders can become stakers and deposit BZZ into the contract
+- The BZZ market $ amount should be allocated to the USDC funds, locking the BZZ, and instantly paying out the USDC amount
+- Stakers can select either 1 or 2 year lockups, giving 5% or 10% respectively
+- **Example flow:** A BZZ holder stakes $1k of BZZ → the BZZ is locked → $100 of USDC is paid out instantly
+- BZZ may be deposited until 10% the $ value of staked BZZ equals the total USDC amount available
+- Any excess USDC not assigned and paid out to a staker that remains in the contract may be withdrawn by the foundation's wallet at any time
+- This mechanism operates on a first come, first serve basis
+
+### Front End UI
+
+- **Domain:** New domain or subdomain (e.g., `vault.ethswarm.org` or `vault.bzz.limo`)
+- **Landing page** with the following functionality:
+  - Connect wallet functionality
+  - Deposit buttons/functionality to deposit a definable amount of BZZ
+  - Deposits should have selected 1 or 2 year lockups and show the expected ROI
+  - Dashboard displaying expected payout in a 'swap card'-like widget
+  - Dashboard header displaying total contract holdings of BZZ and USDC
+  - User logic to determine the withdrawal date of the BZZ, associated with the connected/depositing wallet
+
+## Tech Stack
+
+- **Framework:** Next.js 14+ with App Router
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Blockchain:** Smart contracts for BZZ token staking
+- **Wallet Integration:** Web3 wallet connectivity
 
 ## Getting Started
 
-First, run the development server:
+First, install dependencies:
+
+```bash
+npm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+staking-vault/
+├── src/
+│   ├── app/              # Next.js app router pages
+│   ├── components/       # React components
+│   └── lib/              # Utility functions and helpers
+├── public/               # Static assets
+└── ...
+```
 
-## Learn More
+## Development
 
-To learn more about Next.js, take a look at the following resources:
+This project uses:
+- ESLint for code linting
+- TypeScript for type safety
+- Tailwind CSS for styling
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+TBD
