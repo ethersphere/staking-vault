@@ -4,10 +4,13 @@ This guide walks you through deploying the StakingVault smart contract.
 
 ## Prerequisites
 
-1. Node.js and npm installed
-2. Private key with sufficient ETH/xDAI for deployment
-3. RPC URLs for your target networks
-4. Block explorer API keys (for contract verification)
+1. **Node.js 22.x (LTS)** - Required for Hardhat compatibility
+   - Use `nvm use` to switch to the correct version
+   - Or install: `nvm install 22 && nvm use 22`
+2. npm or yarn package manager
+3. Private key with sufficient ETH/xDAI for deployment
+4. RPC URLs for your target networks
+5. Block explorer API keys (for contract verification)
 
 ## Environment Setup
 

@@ -36,12 +36,29 @@ Currently the BZZ token is fully circulated and there is remarkable selling pres
 - **Framework:** Next.js 14+ with App Router
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS
-- **Blockchain:** Smart contracts for BZZ token staking
+- **Blockchain:** Smart contracts for BZZ token staking (Hardhat, OpenZeppelin)
 - **Wallet Integration:** Web3 wallet connectivity
+- **Node.js:** Version 22 LTS (required for Hardhat compatibility)
+
+## Prerequisites
+
+- **Node.js 22.x** (LTS) - Use `nvm use` or `nvm install` to switch to the correct version
+- npm or yarn package manager
 
 ## Getting Started
 
-First, install dependencies:
+First, ensure you're using Node.js 22:
+
+```bash
+# If using nvm (recommended)
+nvm use
+
+# Or install Node.js 22 if not already installed
+nvm install 22
+nvm use 22
+```
+
+Then, install dependencies:
 
 ```bash
 npm install
