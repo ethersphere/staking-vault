@@ -15,10 +15,11 @@ Currently the BZZ token is fully circulated and there is remarkable selling pres
 - BZZ holders can become stakers and deposit BZZ into the contract
 - The BZZ market $ amount should be allocated to the USDC funds, locking the BZZ, and instantly paying out the USDC amount
 - Stakers can select either 1 or 2 year lockups, giving 5% or 10% respectively
-- **Example flow:** A BZZ holder stakes $1k of BZZ → the BZZ is locked → $100 of USDC is paid out instantly
-- BZZ may be deposited until 10% the $ value of staked BZZ equals the total USDC amount available
-- Any excess USDC not assigned and paid out to a staker that remains in the contract may be withdrawn by the foundation's wallet at any time
-- This mechanism operates on a first come, first serve basis
+- **Example flow:** A BZZ holder stakes $1k of BZZ → the BZZ is locked → $100 of USDC is paid out instantly (10% for 2-year lock)
+- **Staking capacity:** BZZ may be staked as long as sufficient USDC is available in the vault to pay the rewards
+- The mechanism operates on a **first come, first serve** basis - staking stops when USDC runs out
+- **BZZ price:** Users provide the current USD value of their BZZ when staking (frontend calculates this using market data)
+- Any excess USDC not allocated to active stakes may be withdrawn by the foundation's wallet at any time
 
 ### Front End UI
 
@@ -111,6 +112,23 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
+
+## How It Works
+
+1. **Foundation Funds Vault**: The Swarm Foundation deposits USDC into the smart contract
+2. **Users Stake BZZ**: BZZ holders deposit their tokens and select a lock period (1 or 2 years)
+3. **Instant Rewards**: Users immediately receive USDC rewards (5% or 10% of USD value)
+4. **BZZ Locked**: Staked BZZ remains locked in the contract until the unlock date
+5. **Withdrawal**: After the lock period expires, users can withdraw their original BZZ tokens
+6. **Capacity Management**: Staking continues until available USDC runs out (first come, first serve)
+
+### Important Notes
+
+- **BZZ Price Feed**: The frontend fetches current BZZ market price and calculates USD value automatically
+- **User Provides Value**: When staking, users submit the USD value of their BZZ along with the transaction
+- **No Oracle (Yet)**: The current version trusts user-provided prices; future versions may integrate price oracles
+- **USDC Precision**: All USDC amounts use 6 decimals (standard USDC precision)
+- **First Come, First Serve**: Once the vault's USDC runs out, no more staking is possible until the Foundation refunds
 
 ### Features
 
