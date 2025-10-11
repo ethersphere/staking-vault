@@ -34,6 +34,10 @@ contract StakingVault is AccessControl, ReentrancyGuard, Pausable {
     uint256 public constant TWO_YEARS_REWARD_BPS = 1000; // 10%
     uint256 public constant BASIS_POINTS = 10000;
 
+    // Withdrawal limits
+    uint256 public constant MAX_WITHDRAWAL_PERCENTAGE = 10; // 10% of available USDC per stake
+    uint256 public constant MIN_WITHDRAWAL_LIMIT = 1_000_000_000; // 1000 USDC (6 decimals)
+
     // Stake information
     struct Stake {
         uint256 bzzAmount;
@@ -142,7 +146,15 @@ contract StakingVault is AccessControl, ReentrancyGuard, Pausable {
         uint256 usdcReward = (bzzValueInUSDC * rewardBPS) / BASIS_POINTS;
 
         // Check if enough USDC is available
-        require(usdcReward <= getAvailableUSDC(), "Insufficient USDC in vault");
+        uint256 availableUSDC = getAvailableUSDC();
+        require(usdcReward <= availableUSDC, "Insufficient USDC in vault");
+
+        // Check withdrawal limit: max 10% of available USDC, but at least 1000 USDC minimum
+        uint256 maxWithdrawal = (availableUSDC * MAX_WITHDRAWAL_PERCENTAGE) / 100;
+        if (maxWithdrawal < MIN_WITHDRAWAL_LIMIT) {
+            maxWithdrawal = MIN_WITHDRAWAL_LIMIT;
+        }
+        require(usdcReward <= maxWithdrawal, "Reward exceeds withdrawal limit");
 
         // Calculate unlock time
         uint256 lockDuration = lockPeriod == 1 ? ONE_YEAR : TWO_YEARS;
@@ -248,6 +260,19 @@ contract StakingVault is AccessControl, ReentrancyGuard, Pausable {
         require(lockPeriod == 1 || lockPeriod == 2, "Invalid lock period");
         uint256 rewardBPS = lockPeriod == 1 ? ONE_YEAR_REWARD_BPS : TWO_YEARS_REWARD_BPS;
         return (bzzValueInUSDC * rewardBPS) / BASIS_POINTS;
+    }
+
+    /**
+     * @notice Get the maximum withdrawal limit based on current available USDC
+     * @return Maximum USDC that can be withdrawn in a single stake
+     */
+    function getMaxWithdrawalLimit() external view returns (uint256) {
+        uint256 availableUSDC = getAvailableUSDC();
+        uint256 maxWithdrawal = (availableUSDC * MAX_WITHDRAWAL_PERCENTAGE) / 100;
+        if (maxWithdrawal < MIN_WITHDRAWAL_LIMIT) {
+            return MIN_WITHDRAWAL_LIMIT;
+        }
+        return maxWithdrawal;
     }
 
     /**
